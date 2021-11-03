@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Django's Blog{% endblock %}
+
+<!-- Page Header-->
+{% block header %}
+<header class="masthead" style="background-image: url({% static 'assets/img/home-bg.jpg' %})">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Django's Blog</h1>
+                    <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+<!-- Main Content-->
+{% block contents %}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <!-- 
+                全レコードが格納されたorderby_recodeから
+                レコードを一件づつrecodeに取り出す
+            -->
+            {% for record in orderby_records %}
+            <div class="post-preview">
+                <a href="{% url 'blog:blog_detail' record.pk %}">
+                <!--　記事のタイトル　-->
+                    <h2 class="post-title">{{record.title}}</h2><!--titleフィールドを出力-->
+                    <h3 class="post-subtitle">
+                        <!--サブタイトルの文字サイズを16pxにする-->
+                        <span style="font-size" : 16px>
+                            <!--
+                                contentフィールドを出力
+                                truncatecharsで出力する文字数を50以内に制限
+                            -->
+                            {{record.content|truncatechars:50}}
+                        </span> 
+                    </h3>
+                </a>
+                <!--投稿日時とカテゴリ-->
+                <p class="post-meta">
+                    <!--ページ上部にリンクする-->
+                    <a href="#">Django's Blog</a>
+                    <!-- posted_atフィールドを出力　-->
+                    {{record.posted_at}}に投稿／カテゴリ:
+                    <!--　categoryフィールドを出力　-->
+                    {{record.category}}
+                </p>
+            </div>
+            <!-- Divider-->
+            <hr class="my-4" />
+            {% endfor %}
+
+            <!-- Pager-->
+            {% include "pagination.html" %}
+    </div>
+</div>
+{% endblock %}
